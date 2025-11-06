@@ -43,14 +43,13 @@ export default {
       console.log(`[${new Date().toISOString()}] ${request.method} ${url.pathname}`);
       
       // 处理请求体
-      let body = null;
-      let modifiedBody = null;
+      let bodyToSend = null;
       
       if (request.method !== 'GET' && request.method !== 'HEAD') {
-        body = await request.text();
+        const bodyText = await request.text();
         
-        if (body) {
-          modifiedBody = applyReplacements(body);
+        if (bodyText) {
+          bodyToSend = applyReplacements(bodyText);
           console.log(`[Replaced] Request body processed with ${Object.keys(REPLACE_RULES).length} rule(s)`);
         }
       }
@@ -59,15 +58,15 @@ export default {
       const headers = new Headers(request.headers);
       headers.set('host', targetUrl.host);
       
-      if (modifiedBody) {
-        headers.set('content-length', new Blob([modifiedBody]).size.toString());
+      if (bodyToSend) {
+        headers.set('content-length', new TextEncoder().encode(bodyToSend).length.toString());
       }
       
       // 发起代理请求
       const proxyRequest = new Request(targetUrl.toString(), {
         method: request.method,
         headers: headers,
-        body: modifiedBody || (request.method !== 'GET' && request.method !== 'HEAD' ? request.body : null),
+        body: bodyToSend,
       });
       
       const response = await fetch(proxyRequest);
