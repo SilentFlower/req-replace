@@ -4,7 +4,9 @@
   "description": "Network proxy service with request body replacement support",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "deploy": "npx wrangler deploy",
+    "dev:worker": "npx wrangler dev"
   },
   "keywords": ["proxy", "request", "replace", "stream"],
   "author": "",

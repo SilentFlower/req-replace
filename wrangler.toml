@@ -1,0 +1,12 @@
+name = "req-replace"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# 环境变量配置
+[vars]
+BASE_URL = "http://127.0.0.1:3000"
+
+# 部署说明：
+# 1. 修改上面的 BASE_URL 为你的目标服务器地址
+# 2. 运行: npx wrangler deploy
+# 3. 或使用: npm run deploy

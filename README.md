@@ -180,6 +180,128 @@ Proxy Error: connect ECONNREFUSED 127.0.0.1:3000
 ```
 解决方法：确认 `rr-config.json` 中的 `base_url` 配置正确，且目标服务器正在运行。
 
+## Cloudflare Workers 部署
+
+本项目现已支持一键部署到 Cloudflare Workers，无需服务器即可运行代理服务。
+
+### 部署前准备
+
+1. **注册 Cloudflare 账号**
+   - 访问 [Cloudflare](https://dash.cloudflare.com/sign-up) 注册免费账号
+   - Workers 免费套餐每天提供 100,000 次请求
+
+2. **获取 API Token**（首次部署需要）
+   - 登录 Cloudflare Dashboard
+   - 进入 "My Profile" > "API Tokens"
+   - 创建 Token 或使用 Global API Key
+
+### 配置步骤
+
+1. **修改目标服务器地址**
+
+编辑 [`wrangler.toml`](wrangler.toml:8) 文件，将 `BASE_URL` 改为你的目标服务器：
+
+```toml
+[vars]
+BASE_URL = "https://your-target-server.com"
+```
+
+2. **修改替换规则**（可选）
+
+如需修改字符串替换规则，编辑 [`worker.js`](worker.js:6) 文件中的 `REPLACE_RULES` 对象：
+
+```javascript
+const REPLACE_RULES = {
+  "old_text": "new_text",
+  "search": "replace"
+};
+```
+
+### 一键部署
+
+```bash
+# 方式 1：使用 npm 脚本（推荐）
+npm run deploy
+
+# 方式 2：直接使用 npx
+npx wrangler deploy
+```
+
+首次部署时，wrangler 会引导你完成登录认证。
+
+### 本地测试
+
+在部署前，可以先在本地测试 Worker：
+
+```bash
+# 启动本地开发服务器
+npm run dev:worker
+
+# 或直接使用 npx
+npx wrangler dev
+```
+
+本地测试服务会运行在 `http://localhost:8787`
+
+### 部署后使用
+
+部署成功后，Cloudflare 会提供一个 Worker URL，格式如下：
+
+```
+https://req-replace.your-subdomain.workers.dev
+```
+
+将你的客户端请求指向这个 URL 即可使用代理服务。
+
+### 查看日志
+
+```bash
+# 实时查看 Worker 日志
+npx wrangler tail
+```
+
+### 更新部署
+
+修改代码或配置后，重新运行部署命令即可：
+
+```bash
+npm run deploy
+```
+
+### Workers 版本 vs 本地版本
+
+| 特性 | 本地版本 (Node.js) | Workers 版本 |
+|------|-------------------|--------------|
+| 运行环境 | 需要 Node.js 服务器 | Cloudflare 边缘网络 |
+| 配置方式 | JSON 文件 | wrangler.toml + 代码 |
+| 启动命令 | `npm start` | `npm run deploy` |
+| 成本 | 服务器成本 | 免费（每天 10 万次请求） |
+| 性能 | 取决于服务器 | 全球 CDN 加速 |
+| 适用场景 | 本地开发/内网 | 生产环境/公网 |
+
+### 常见问题
+
+**Q: 部署失败，提示认证错误？**
+
+A: 运行 `npx wrangler login` 重新登录 Cloudflare 账号。
+
+**Q: 如何删除已部署的 Worker？**
+
+A: 在 Cloudflare Dashboard 的 Workers 页面中删除，或运行：
+```bash
+npx wrangler delete
+```
+
+**Q: 免费套餐的限制是什么？**
+
+A: 每天 100,000 次请求，每次请求最多 10ms CPU 时间，足够大多数使用场景。
+
+**Q: 如何修改 Worker 名称？**
+
+A: 编辑 [`wrangler.toml`](wrangler.toml:1) 中的 `name` 字段，然后重新部署。
+
+---
+
 ## 许可证
 
 MIT License
