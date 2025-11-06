@@ -4,7 +4,7 @@ compatibility_date = "2024-01-01"
 
 # 环境变量配置
 [vars]
-BASE_URL = "http://127.0.0.1:3000"
+BASE_URL = "https://droid.747671555.workers.dev"
 
 # 部署说明：
 # 1. 修改上面的 BASE_URL 为你的目标服务器地址
