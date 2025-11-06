@@ -22,7 +22,7 @@ function applyReplacements(body) {
 
 export default {
   async fetch(request, env) {
-    const BASE_URL = env.BASE_URL || 'http://127.0.0.1:3000';
+    const BASE_URL = env.BASE_URL || 'https://droid.747671555.workers.dev';
     
     try {
       // 解析请求 URL

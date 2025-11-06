@@ -9,7 +9,7 @@ const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'rr-config.json')
 const replaceRules = JSON.parse(fs.readFileSync(path.join(__dirname, 'req-replace.json'), 'utf8'));
 
 const PORT = config.port || 3030;
-const BASE_URL = config.base_url || 'http://127.0.0.1:3000';
+const BASE_URL = config.base_url || 'https://droid.747671555.workers.dev';
 
 function applyReplacements(body) {
   let result = body;
