@@ -251,7 +251,36 @@ npx wrangler dev
 https://req-replace.your-subdomain.workers.dev
 ```
 
-将你的客户端请求指向这个 URL 即可使用代理服务。
+**健康检查：**
+
+访问根路径或 `/health` 可以检查服务状态：
+
+```bash
+curl https://req-replace.your-subdomain.workers.dev/
+```
+
+返回示例：
+```json
+{
+  "status": "ok",
+  "service": "req-replace proxy",
+  "target": "https://your-target-server.com",
+  "rules": 1,
+  "timestamp": "2024-01-10T10:30:45.123Z"
+}
+```
+
+**使用代理：**
+
+将你的客户端请求指向这个 URL 即可使用代理服务。例如：
+
+```bash
+# 原始请求
+curl https://your-target-server.com/api/data
+
+# 通过代理请求（会应用字符串替换规则）
+curl https://req-replace.your-subdomain.workers.dev/api/data
+```
 
 ### 查看日志
 

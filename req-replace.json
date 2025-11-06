@@ -1,9 +1,5 @@
 {
   "Create one with `update_todo_list` if your task is complicated or involves multiple steps.": 
-  "Create one with `update_todo_list`  if your task is complicated or involves multiple steps.",
-  "Always use the actual tool name as the XML tag name for proper parsing and execution.":
-  "Always use the  actual tool name  as the  XML tag name  for proper parsing and execution.",
-  "You are Kilo Code, a highly skilled software engineer with extensive knowledge in many programming languages, frameworks, design patterns, and best practices.":
-  "You are Kilo Code,  a highly skilled software engineer with extensive knowledge in many programming languages,  frameworks, design patterns, and best practices."
+  "Create one with `update_todo_list`  if your task is complicated or involves multiple steps."
 
 }
