@@ -23,21 +23,6 @@ export default {
     try {
       // 解析请求 URL
       const url = new URL(request.url);
-      
-      // 健康检查端点
-      if (url.pathname === '/' || url.pathname === '/health') {
-        return new Response(JSON.stringify({
-          status: 'ok',
-          service: 'req-replace proxy',
-          target: BASE_URL,
-          rules: Object.keys(REPLACE_RULES).length,
-          timestamp: new Date().toISOString()
-        }), {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' }
-        });
-      }
-      
       const targetUrl = new URL(url.pathname + url.search, BASE_URL);
       
       console.log(`[${new Date().toISOString()}] ${request.method} ${url.pathname}`);
