@@ -22,6 +22,19 @@ function applyReplacements(body) {
 const server = http.createServer((clientReq, clientRes) => {
   console.log(`[${new Date().toISOString()}] ${clientReq.method} ${clientReq.url}`);
 
+  // 健康检查端点
+  if (clientReq.url === '/' || clientReq.url === '/health') {
+    clientRes.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    clientRes.end(JSON.stringify({
+      status: 'ok',
+      service: 'req-replace proxy',
+      target: BASE_URL,
+      rules: Object.keys(replaceRules).length,
+      timestamp: new Date().toISOString()
+    }));
+    return;
+  }
+
   let body = [];
 
   clientReq.on('data', (chunk) => {
